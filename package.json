@@ -1,0 +1,123 @@
+{
+  "name": "vscode-graphviz",
+  "displayName": "Graphviz (dot) language support for Visual Studio Code",
+  "description": "This extension provides GraphViz (dot) language support for Visual Studio Code",
+  "version": "0.0.1",
+  "publisher": "joaompinto",
+  "author": "João Pinto <lamego.pinto@gmail.com>",
+  "license": "MIT",
+  "readme": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joaompinto/vscode-graphviz"
+  },
+  "galleryBanner": {
+    "color": "#69c",
+    "theme": "light"
+  },
+  "bugs": "https://github.com/joaompinto/vscode-graphviz/issues",
+  "homepage": "https://github.com/joaompinto/vscode-graphviz/blob/master/README.md",
+  "icon": "images/icon.png",
+  "main": "./out/src/extension",
+  "engines": {
+    "vscode": "^1.5.0"
+  },
+  "categories": [
+    "Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:dot"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "dot",
+        "aliases": [
+          "Graphviz (DOT)"
+        ],
+        "extensions": [
+          ".gv",
+          ".dot",
+          ".DOT"
+        ],
+        "configuration": "dot/dot.configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+          "language": "dot",
+          "scopeName": "source.dot",
+          "path": "dot/syntaxes/dot.tmLanguage"
+      }
+    ],
+    "snippets": [
+        {
+            "language": "dot",
+            "path": "dot/snippets/snippets/dot.json"
+        }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Graphviz Configuration",
+      "properties": {
+        "Graphviz.runInterval": {
+          "type": "number",
+          "default": 1000,
+          "description": "Control how often we will be checking for file changes"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "graphviz.preview",
+        "key": "ctrl+shift+v",
+        "mac": "shift+cmd+v",
+        "when": "editorTextFocus && editorLangId == dot"
+      },
+      {
+        "command": "graphviz.previewToSide",
+        "key": "ctrl+k v",
+        "mac": "cmd+k shift+v",
+        "when": "editorTextFocus && editorLangId == dot"
+      }
+    ],
+    "commands": [
+      {
+        "command": "graphviz.preview",
+        "title": "Toggle Preview",
+        "category": "Graphviz"
+      },
+      {
+        "command": "graphviz.previewToSide",
+        "title": "Open Preview to the Side",
+        "category": "Graphviz"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "graphviz.previewToSide",
+          "when": "resourceLangId == dot"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
+    "postinstall": "node ./node_modules/vscode/bin/install",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "typescript": "^2.0.3",
+    "vscode": "^1.0.0",
+    "mocha": "^2.3.3",
+    "@types/node": "^6.0.40",
+    "@types/mocha": "^2.2.32"
+  },
+  "dependencies": {
+    "vscode": "^1.0.0",
+    "viz.js": "^1.8.1"
+  }
+}

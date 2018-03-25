@@ -36,5 +36,5 @@ code --install-extension *.vsix
 
 ## Credits
 
-The preview uses <https://github.com/mdaines/viz.js/> .
-The syntax highlight/snippets support is based on <https://github.com/Stephanvs/vscode-graphviz> .
+* The preview uses <https://github.com/mdaines/viz.js/> .
+* The syntax highlight/snippets support is based on <https://github.com/Stephanvs/vscode-graphviz> .

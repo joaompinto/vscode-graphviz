@@ -2,9 +2,12 @@
   "name": "vscode-graphviz",
   "displayName": "Graphviz (dot) language support for Visual Studio Code",
   "description": "This extension provides GraphViz (dot) language support for Visual Studio Code",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "joaompinto",
   "author": "João Pinto <lamego.pinto@gmail.com>",
+  "contributors": [
+    "Jan Dolejsi"
+  ],
   "license": "MIT",
   "readme": "README.md",
   "repository": {
@@ -20,10 +23,10 @@
   "icon": "images/icon.png",
   "main": "./out/src/extension",
   "engines": {
-    "vscode": "^1.5.0"
+    "vscode": "^1.28.2"
   },
   "categories": [
-    "Languages",
+    "Programming Languages",
     "Snippets"
   ],
   "activationEvents": [
@@ -46,16 +49,16 @@
     ],
     "grammars": [
       {
-          "language": "dot",
-          "scopeName": "source.dot",
-          "path": "dot/syntaxes/dot.tmLanguage"
+        "language": "dot",
+        "scopeName": "source.dot",
+        "path": "dot/syntaxes/dot.tmLanguage"
       }
     ],
     "snippets": [
-        {
-            "language": "dot",
-            "path": "dot/snippets/snippets/dot.json"
-        }
+      {
+        "language": "dot",
+        "path": "dot/snippets/snippets/dot.json"
+      }
     ],
     "configuration": {
       "type": "object",
@@ -100,6 +103,12 @@
           "command": "graphviz.previewToSide",
           "when": "resourceLangId == dot"
         }
+      ],
+      "editor/context": [
+        {
+          "command": "graphviz.previewToSide",
+          "when": "resourceLangId == dot"
+        }
       ]
     }
   },
@@ -110,14 +119,13 @@
     "test": "node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
-    "typescript": "^2.0.3",
-    "vscode": "^1.0.0",
+    "typescript": "^3.1.4",
+    "vscode": "^1.1.21",
     "mocha": "^2.3.3",
     "@types/node": "^6.0.40",
     "@types/mocha": "^2.2.32"
   },
   "dependencies": {
-    "vscode": "^1.0.0",
-    "viz.js": "^1.8.1"
+    "viz.js": "^2.0.0"
   }
 }

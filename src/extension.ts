@@ -3,15 +3,14 @@ Activation Trigger:
     Keybindings .preview and .previewToSide commands (editorTextFocus matching languageId)
 
 On Activation:
-    Create a provider for the `languageId`-preview uri scheme
-    Register the `languageId`.preview and `languageId`.previewToSide command functions
+    Create a webview generator
+    Register the `languageId`.preview and `languageId`.previewToSide commands
 
 On .preview command execution:
-    Call CreateHTMLWindow() targetting the active editor view column
+    Call GraphvizPreviewGenerator::revealOrCreatePreview(...) targeting the active editor view column
 
 On .previewToSide execution:
-    Call CreateHTMLWindow() targetting the next editor view column
-
+    Call GraphvizPreviewGenerator::revealOrCreatePreview(...) targeting the next editor view column
 */
 // https://code.visualstudio.com/Docs/extensionAPI/vscode-api
 
@@ -20,69 +19,46 @@ import {
     workspace,
     window,
     commands,
-    Disposable,
     ExtensionContext,
     ViewColumn,
     TextDocumentChangeEvent,
-    TextEditorSelectionChangeEvent,
-    TextDocument,
-    Uri
+    TextDocument
 } from 'vscode';
 
-import GraphvizProvider, {
-    CreateHTMLWindow,
-    MakePreviewUri
-} from './GraphvizProvider';
+import { GraphvizPreviewGenerator } from './GraphvizPreviewGenerator';
 
-import * as path from "path";
+const DOT = 'dot';
 
 export function activate(context: ExtensionContext) {
 
-    const provider = new GraphvizProvider();
-    const providerRegistrations = Disposable.from(
-        workspace.registerTextDocumentContentProvider(GraphvizProvider.scheme, provider)
-    )
+    const graphvizPreviewGenerator = new GraphvizPreviewGenerator(context);
 
     // When the active document is changed set the provider for rebuild
     // this only occurs after an edit in a document
-    workspace.onDidChangeTextDocument((e: TextDocumentChangeEvent) => {
-        if (e.document === window.activeTextEditor.document) {
-            provider.setNeedsRebuild(true);
+    context.subscriptions.push(workspace.onDidChangeTextDocument((e: TextDocumentChangeEvent) => {
+        if (e.document.languageId === DOT) {
+            graphvizPreviewGenerator.setNeedsRebuild(e.document.uri, true);
         }
-    })
+    }));
 
-    // This occurs whenever the selected document changes, its useful to keep the
-    window.onDidChangeTextEditorSelection((e: TextEditorSelectionChangeEvent) => {
-        if (!!e && !!e.textEditor && (e.textEditor === window.activeTextEditor)) {
-            provider.setNeedsRebuild(true);
+    context.subscriptions.push(workspace.onDidSaveTextDocument((doc: TextDocument) => {
+        if (doc.languageId === DOT) {
+            graphvizPreviewGenerator.setNeedsRebuild(doc.uri, true);
         }
-    })
-
-    workspace.onDidSaveTextDocument((e: TextDocument) => {
-        if (e === window.activeTextEditor.document) {
-            provider.update(MakePreviewUri(e));
-        }
-    })
+    }))
 
     let previewToSide = commands.registerCommand("graphviz.previewToSide", () => {
-        let displayColumn: ViewColumn;
-        switch (window.activeTextEditor.viewColumn) {
-            case ViewColumn.One:
-                displayColumn = ViewColumn.Two;
-                break;
-            case ViewColumn.Two:
-            case ViewColumn.Three:
-                displayColumn = ViewColumn.Three;
-                break;
+        if (window.activeTextEditor != null && window.activeTextEditor.document.languageId === DOT) {
+            return graphvizPreviewGenerator.revealOrCreatePreview(window.activeTextEditor.document, ViewColumn.Beside);
         }
-        return CreateHTMLWindow(provider, displayColumn);
     })
 
     let preview = commands.registerCommand("graphviz.preview", () => {
-        return CreateHTMLWindow(provider, window.activeTextEditor.viewColumn);
+        if (window.activeTextEditor != null && window.activeTextEditor.document.languageId === DOT)
+        return graphvizPreviewGenerator.revealOrCreatePreview(window.activeTextEditor.document, window.activeTextEditor.viewColumn);
     })
 
-    context.subscriptions.push(previewToSide, preview, providerRegistrations);
+    context.subscriptions.push(previewToSide, preview, graphvizPreviewGenerator);
 }
 
 // this method is called when your extension is deactivated

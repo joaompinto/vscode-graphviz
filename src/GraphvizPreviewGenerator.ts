@@ -96,6 +96,8 @@ export class GraphvizPreviewGenerator extends Disposable {
             localResourceRoots: [Uri.file(path.join(this.context.extensionPath, "content"))]
         });
 
+        webViewPanel.iconPath = Uri.file(this.context.asAbsolutePath("content/icon.svg"));
+
         return new PreviewPanel(doc.uri, webViewPanel);
     }
 

@@ -27,7 +27,7 @@ function initializeScale(initialScale, initialFitToWidthMode, initialFitToHeight
 
     svg = svgEls[0];
     var sizePattern = /^([\d.]+)(em|px|%|cm|mm|in|pt|pc)$/g;
-    
+
     var match = sizePattern.exec(svg.getAttribute("width"));
     if (match) {
         originalWidth = match[1];
@@ -129,10 +129,14 @@ function update(sendMessage=true) {
         svg.setAttribute("style", "width: "+(originalWidth*scale)+originalWidthUnit+
             "; height: "+(originalHeight*scale)+originalHeightUnit);
     }
-    document.getElementById("scalePercent").setAttribute("value", (scale*100).toFixed(0)+"%");
+    document.getElementById("scalePercent").setAttribute("value", (scale*100).toFixed(0));
 
     // post message to the extension, so the scale is respected after the webview is updated
     if (sendMessage) postMessage({command: 'scale', value: scale});
+}
+
+function exportSvg() {
+    postMessage({command: 'export'})
 }
 
 function postMessage(message) {

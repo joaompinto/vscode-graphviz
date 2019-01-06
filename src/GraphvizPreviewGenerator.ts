@@ -2,6 +2,7 @@ import { ExtensionContext, TextDocument, window, ViewColumn, Uri, WebviewPanel, 
 const { Module, render } = require('viz.js/full.render.js');
 let Viz = require("viz.js");
 import * as path from "path";
+import { SvgExporter } from "./SvgExporter";
 var fs = require("fs");
 
 export class GraphvizPreviewGenerator extends Disposable {
@@ -19,7 +20,7 @@ export class GraphvizPreviewGenerator extends Disposable {
 
         if (panel) {
             panel.setNeedsRebuild(needsRebuild);
-            
+
             this.resetTimeout();
         }
     }
@@ -75,6 +76,9 @@ export class GraphvizPreviewGenerator extends Disposable {
             case 'fitToWidth':
                 previewPanel.setFitToWidth(message.value);
                 break;
+            case 'export':
+                new SvgExporter().export(previewPanel.uri);
+                break;
             default:
                 console.warn('Unexpected command: ' + message.command);
         }
@@ -82,14 +86,14 @@ export class GraphvizPreviewGenerator extends Disposable {
 
     createPreviewPanel(doc: TextDocument, displayColumn: ViewColumn): PreviewPanel {
         let previewTitle = `Preview: '${path.basename(window.activeTextEditor.document.fileName)}'`;
-    
-        let previewPanel = window.createWebviewPanel('graphvizPreview', previewTitle, displayColumn, { 
+
+        let webViewPanel = window.createWebviewPanel('graphvizPreview', previewTitle, displayColumn, {
             enableFindWidget: true,
             enableScripts: true,
             localResourceRoots: [Uri.file(path.join(this.context.extensionPath, "content"))]
         });
 
-        return new PreviewPanel(doc.uri, previewPanel);
+        return new PreviewPanel(doc.uri, webViewPanel);
     }
 
     async updateContent(previewPanel: PreviewPanel, doc: TextDocument) {
@@ -99,7 +103,7 @@ export class GraphvizPreviewGenerator extends Disposable {
         previewPanel.setNeedsRebuild(false);
         previewPanel.getPanel().webview.html = await this.getPreviewHtml(previewPanel, doc);
     }
-    
+
     toSvg(doc: TextDocument): Thenable<string> | string {
         let text = doc.getText();
         return new Viz({Module, render}).renderString(text);
@@ -120,17 +124,17 @@ export class GraphvizPreviewGenerator extends Disposable {
 
     private async getPreviewHtml(previewPanel: PreviewPanel, doc: TextDocument): Promise<string> {
         let templateHtml = await this.getPreviewTemplate();
-        
+
         // change resource URLs to vscode-resource:
         templateHtml = templateHtml.replace(/<script src="(.+)">/g, (scriptTag, srcPath) => {
             scriptTag;
             let resource=Uri.file(
-                path.join(this.context.extensionPath, 
-                    this.CONTENT_FOLDER, 
+                path.join(this.context.extensionPath,
+                    this.CONTENT_FOLDER,
                     srcPath))
                     .with({scheme: "vscode-resource"});
             return `<script src="${resource}">`;
-        }).replace("initializeScale(1,false,false)", 
+        }).replace("initializeScale(1,false,false)",
             `initializeScale(${previewPanel.getScale()}, ${previewPanel.getFitToWidth()}, ${previewPanel.getFitToHeight()})`);
 
         let svg = "";
@@ -142,7 +146,7 @@ export class GraphvizPreviewGenerator extends Disposable {
 
         return templateHtml.replace("PLACEHOLDER", svg);
     }
-} 
+}
 
 class PreviewPanel {
 

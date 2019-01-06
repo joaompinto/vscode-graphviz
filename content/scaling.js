@@ -139,6 +139,10 @@ function exportSvg() {
     postMessage({command: 'export'})
 }
 
+function openInBrowser() {
+    postMessage({command: 'open'})
+}
+
 function postMessage(message) {
     if (vscode) vscode.postMessage(message);
 }

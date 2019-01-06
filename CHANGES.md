@@ -6,7 +6,11 @@ Released 2019-01-06
 
 As per a popular request, an export to a file was added. Click the [🢥🗋] button and select the location of the .svg file. The file may be open in any web browser, or emailed...
 
-![Graph preview with manual and automatic scaling](images/export.png)
+![Export to a .svg file](images/export.PNG)
+
+It is also possible to open the file in the default browser by clicking on [🗔]. This creates a temp file and asks the operating system to open it in a default browser or another capable application.
+
+![Open file in a browser](images/open_in_browser.PNG)
 
 The zoom level value may be now set to a specific value, or gradually changed by the up/down keys on the keyboard.
 

@@ -18,9 +18,7 @@ export class SvgExporter {
 
         if (!uri) return;
 
-        let doc = await workspace.openTextDocument(documentUri);
-        let text = doc.getText();
-        let svg = await new Viz({Module, render}).renderString(text);
+        let svg = await this.renderSvgString(documentUri);
 
         fs.writeFile(uri.fsPath, svg, 'utf8', err => {
             if (err) {
@@ -28,5 +26,12 @@ export class SvgExporter {
                 console.log(err);
             }
         });
+    }
+
+    protected async renderSvgString(documentUri: Uri): Promise<string> {
+        let doc = await workspace.openTextDocument(documentUri);
+        let graphVizText = doc.getText();
+        let svg = await new Viz({ Module, render }).renderString(graphVizText);
+        return svg;
     }
 }

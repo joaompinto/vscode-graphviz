@@ -51,7 +51,13 @@ The zoom level value may be now set to a specific value, or gradually changed by
 
 Click the [🢥🗋] button and select the location of the .svg file. The file may be open in any web browser, or attached to an email etc...
 
-![Graph preview with manual and automatic scaling](images/export.png)
+![Graph preview with manual and automatic scaling](images/export.PNG)
+
+### Opening preview in a browser
+
+It is also possible to open the file in the default browser by clicking on [🗔]. This creates a temp file and asks the operating system to open it in a default browser or another capable application.
+
+![Open file in a browser](images/open_in_browser.PNG)
 
 Known issues:
 

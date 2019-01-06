@@ -3,6 +3,7 @@ const { Module, render } = require('viz.js/full.render.js');
 let Viz = require("viz.js");
 import * as path from "path";
 import { SvgExporter } from "./SvgExporter";
+import { OpenInBrowser } from "./OpenInBrowser";
 var fs = require("fs");
 
 export class GraphvizPreviewGenerator extends Disposable {
@@ -79,6 +80,8 @@ export class GraphvizPreviewGenerator extends Disposable {
             case 'export':
                 new SvgExporter().export(previewPanel.uri);
                 break;
+            case 'open':
+                new OpenInBrowser().open(previewPanel.uri);
             default:
                 console.warn('Unexpected command: ' + message.command);
         }

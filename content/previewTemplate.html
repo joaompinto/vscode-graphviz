@@ -5,15 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="scaling.js"></script>
     <title>Graph preview</title>
+    <style>
+        .toolbarElement { height: 26px }
+    </style>
 </head>
 <body onload="initializeScale(1,false,false)">
     <div style="position: fixed; bottom: 3px; left: 3px; font-size: 200%">
-        <input id="scalePercent" value="100%" style="width: 50px" readonly/>
-        <button onclick="larger()">▲</button>
-        <button onclick="smaller()">▼</button>
-        <button onclick="original()">1:1</button>
-        <button id="fitToWidth"  onclick="fitToWidth()" ondblclick="setFitToWidthMode(!fitToWidthToggledOn)">↔</button>    
-        <button id="fitToHeight" onclick="fitToHeight()" ondblclick="setFitToHeightMode(!fitToHeightToggledOn)">↨</button>
+        <input id="scalePercent" value="100"
+            style="width: 50px" type="number"
+            onchange="setScale(this.value/100.0)"
+            class="toolbarElement"/><span style="font-size: 50%; color: gray">%</span>
+        <button onclick="larger()" title="Make the graph 50% larger." class="toolbarElement">▲</button>
+        <button onclick="smaller()" title="Make the graph 50% smaller." class="toolbarElement">▼</button>
+        <button onclick="original()" title="Reset to 100% zoom." class="toolbarElement">1:1</button>
+        <button id="fitToWidth"
+            onclick="fitToWidth()"
+            ondblclick="setFitToWidthMode(!fitToWidthToggledOn)"
+            title="Fit to window width. Double-click to toggle it on permanently for dynamic graphs."
+            class="toolbarElement">↔</button>
+        <button id="fitToHeight"
+            onclick="fitToHeight()"
+            ondblclick="setFitToHeightMode(!fitToHeightToggledOn)"
+            title="Fit to window height. Double-click to toggle it on permanently for dynamic graphs."
+            class="toolbarElement">↕</button>
+        <button id="download"
+            onclick="exportSvg()"
+            title="Export to a .svg file..."
+            class="toolbarElement">🢥🗋</button>
+        <button id="openInBrowser"
+            onclick="openInBrowser()"
+            title="Open in the default web browser"
+            class="toolbarElement">🗔</button>
     </div>
 
     PLACEHOLDER

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg3741"
+   sodipodi:docname="graphviz_preview_icon.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata3747">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3745">
+    <inkscape:path-effect
+       effect="simplify"
+       id="path-effect3799"
+       is_visible="true"
+       steps="1"
+       threshold="0.0224177"
+       smooth_angles="360"
+       helper_size="0"
+       simplify_individual_paths="false"
+       simplify_just_coalesce="false"
+       simplifyindividualpaths="false"
+       simplifyJustCoalesce="false" />
+    <inkscape:path-effect
+       effect="simplify"
+       id="path-effect3795"
+       is_visible="true"
+       steps="1"
+       threshold="0.0224177"
+       smooth_angles="360"
+       helper_size="0"
+       simplify_individual_paths="false"
+       simplify_just_coalesce="false"
+       simplifyindividualpaths="false"
+       simplifyJustCoalesce="false" />
+    <inkscape:path-effect
+       effect="simplify"
+       id="path-effect3791"
+       is_visible="true"
+       steps="1"
+       threshold="0.0224177"
+       smooth_angles="360"
+       helper_size="0"
+       simplify_individual_paths="false"
+       simplify_just_coalesce="false"
+       simplifyindividualpaths="false"
+       simplifyJustCoalesce="false" />
+    <inkscape:path-effect
+       effect="simplify"
+       id="path-effect3787"
+       is_visible="true"
+       steps="1"
+       threshold="0.0224177"
+       smooth_angles="360"
+       helper_size="0"
+       simplify_individual_paths="false"
+       simplify_just_coalesce="false"
+       simplifyindividualpaths="false"
+       simplifyJustCoalesce="false" />
+  </defs>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1002"
+     inkscape:window-height="952"
+     id="namedview3743"
+     showgrid="false"
+     inkscape:zoom="7.375"
+     inkscape:cx="4.5423729"
+     inkscape:cy="16"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3741" />
+  <ellipse
+     id="path3749"
+     cx="8.2033901"
+     cy="15.999999"
+     rx="4.5423727"
+     ry="3.5254238"
+     style="fill:#008000" />
+  <ellipse
+     id="path3749-7"
+     cx="23.864407"
+     cy="8.2711868"
+     rx="4.5423727"
+     ry="3.5254238"
+     style="fill:#008000" />
+  <ellipse
+     id="path3749-7-3"
+     cx="24"
+     cy="24.677967"
+     rx="4.5423727"
+     ry="3.5254238"
+     style="fill:#008000" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#008000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 12.036445,14.108362 7.994907,-3.945538"
+     id="path4608"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#path3749"
+     inkscape:connection-end="#path3749-7" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#008000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+     d="m 11.910924,18.036756 8.381542,4.604454"
+     id="path4610"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#path3749"
+     inkscape:connection-end="#path3749-7-3" />
+</svg>

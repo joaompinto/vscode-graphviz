@@ -6,7 +6,7 @@
 
 A vscode extension that provides language support and live preview for the Graphviz format.
 
-The preview uses the [Vis.js](https://github.com/mdaines/viz.js/) library.
+The preview uses the [Viz.js](https://github.com/mdaines/viz.js/) library.
 
 The extension can be activated in two ways
 

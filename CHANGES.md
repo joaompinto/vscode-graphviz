@@ -1,5 +1,17 @@
 # Changes
 
+## Version 0.0.4
+
+- fixed [Issue #5](https://github.com/joaompinto/vscode-graphviz/issues/5)
+- replaced `opn` package dependency with new VS Code API to open the .svg file in a default application (e.g. browser)
+- support for cross-extension integration
+
+Other extensions may invoke the preview pane programmatically by writing a valid .dot file to the disk and then executing this command:
+
+```javascript
+commands.executeCommand('graphviz.preview', Uri.parse('/path/graph.dot'));
+```
+
 ## Version 0.0.3: Precise zooming and export to .svg file
 
 Released 2019-01-06
@@ -22,11 +34,11 @@ Released 2018-10-29
 
 The live preview of the graph can now be:
 
-* scaled up [▲],
-* scaled down [▼],
-* reset to 1:1 (one-to-one) scale,
-* scaled to fit the width of the pane [↔] or
-* scaled to fit the height of the pane [↕].
+- scaled up [▲],
+- scaled down [▼],
+- reset to 1:1 (one-to-one) scale,
+- scaled to fit the width of the pane [↔] or
+- scaled to fit the height of the pane [↕].
 
 This greatly facilitates viewing large graphs.
 

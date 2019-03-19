@@ -1,12 +1,12 @@
-import { Uri } from "vscode";
+import { Uri, env, ExtensionContext } from "vscode";
 import { SvgExporter } from "./SvgExporter";
+import { getPreviewTemplate } from "./ContentUtils";
 import * as tmp from 'tmp';
-
-import opn = require('opn');
+import * as path from 'path';
 import fs = require('fs');
 
 export class OpenInBrowser extends SvgExporter {
-    constructor() {
+    constructor(private context: ExtensionContext) {
         super();
     }
 
@@ -14,10 +14,17 @@ export class OpenInBrowser extends SvgExporter {
 
         var svgString = await this.renderSvgString(documentUri);
 
-        var svgFilePath = OpenInBrowser.toTempFile("graph", ".svg", svgString);
+        var browseTemplate = await getPreviewTemplate(this.context, "browseTemplate.html");
+
+        var title = path.basename(documentUri.fsPath);
+        var htmlString = browseTemplate
+            .replace("PLACEHOLDER", svgString)
+            .replace("TITLE", title);
+
+        var htmlFilePath = OpenInBrowser.toTempFile("graph", ".html", htmlString);
 
         // open the file in the default browser
-        opn("file://" + svgFilePath);
+        env.openExternal(Uri.parse("file://" + htmlFilePath));
     }
 
     static toTempFile(prefix: string, suffix: string, text: string): string {

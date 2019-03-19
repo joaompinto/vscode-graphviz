@@ -22,7 +22,8 @@ import {
     ExtensionContext,
     ViewColumn,
     TextDocumentChangeEvent,
-    TextDocument
+    TextDocument,
+    Uri
 } from 'vscode';
 
 import { GraphvizPreviewGenerator } from './GraphvizPreviewGenerator';
@@ -47,18 +48,34 @@ export function activate(context: ExtensionContext) {
         }
     }))
 
-    let previewToSide = commands.registerCommand("graphviz.previewToSide", () => {
-        if (window.activeTextEditor != null && window.activeTextEditor.document.languageId === DOT) {
-            return graphvizPreviewGenerator.revealOrCreatePreview(window.activeTextEditor.document, ViewColumn.Beside);
+    let previewToSide = commands.registerCommand("graphviz.previewToSide", async (dotDocumentUri: Uri) => {
+        let dotDocument = await getDotDocument(dotDocumentUri);
+        if (dotDocument) {
+            return graphvizPreviewGenerator.revealOrCreatePreview(dotDocument, ViewColumn.Beside);
         }
     })
 
-    let preview = commands.registerCommand("graphviz.preview", () => {
-        if (window.activeTextEditor != null && window.activeTextEditor.document.languageId === DOT)
-        return graphvizPreviewGenerator.revealOrCreatePreview(window.activeTextEditor.document, window.activeTextEditor.viewColumn);
+    let preview = commands.registerCommand("graphviz.preview", async (dotDocumentUri: Uri) => {
+        let dotDocument = await getDotDocument(dotDocumentUri);
+        if (dotDocument) {
+            return graphvizPreviewGenerator.revealOrCreatePreview(dotDocument, window.activeTextEditor.viewColumn);
+        }
     })
 
     context.subscriptions.push(previewToSide, preview, graphvizPreviewGenerator);
+}
+
+async function getDotDocument(dotDocumentUri: Uri | undefined): Promise<TextDocument> {
+    if (dotDocumentUri) {
+        return await workspace.openTextDocument(dotDocumentUri);
+    } else {
+        if (window.activeTextEditor != null && window.activeTextEditor.document.languageId === DOT) {
+            return window.activeTextEditor.document;
+        }
+        else {
+            return undefined;
+        }
+    }
 }
 
 // this method is called when your extension is deactivated

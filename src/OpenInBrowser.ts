@@ -1,8 +1,7 @@
-import { Uri } from "vscode";
+import { Uri, env } from "vscode";
 import { SvgExporter } from "./SvgExporter";
 import * as tmp from 'tmp';
 
-import opn = require('opn');
 import fs = require('fs');
 
 export class OpenInBrowser extends SvgExporter {
@@ -17,7 +16,7 @@ export class OpenInBrowser extends SvgExporter {
         var svgFilePath = OpenInBrowser.toTempFile("graph", ".svg", svgString);
 
         // open the file in the default browser
-        opn("file://" + svgFilePath);
+        env.openExternal(Uri.parse("file://" + svgFilePath));
     }
 
     static toTempFile(prefix: string, suffix: string, text: string): string {

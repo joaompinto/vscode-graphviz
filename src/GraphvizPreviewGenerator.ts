@@ -4,6 +4,7 @@ let Viz = require("viz.js");
 import * as path from "path";
 import { SvgExporter } from "./SvgExporter";
 import { OpenInBrowser } from "./OpenInBrowser";
+import { getPreviewTemplate, CONTENT_FOLDER } from "./ContentUtils";
 var fs = require("fs");
 
 export class GraphvizPreviewGenerator extends Disposable {
@@ -81,7 +82,7 @@ export class GraphvizPreviewGenerator extends Disposable {
                 new SvgExporter().export(previewPanel.uri);
                 break;
             case 'open':
-                new OpenInBrowser().open(previewPanel.uri);
+                new OpenInBrowser(this.context).open(previewPanel.uri);
                 break;
             default:
                 console.warn('Unexpected command: ' + message.command);
@@ -115,28 +116,15 @@ export class GraphvizPreviewGenerator extends Disposable {
         return new Viz({Module, render}).renderString(text);
     }
 
-    private async getPreviewTemplate(): Promise<string> {
-        let previewPath = this.context.asAbsolutePath(path.join(this.CONTENT_FOLDER, "previewTemplate.html"));
-
-        return new Promise<string>((resolve, reject) => {
-            fs.readFile(previewPath, "utf8", function (err, data) {
-                if (err) reject(err);
-                else resolve(data);
-            });
-        });
-    }
-
-    CONTENT_FOLDER = "content";
-
     private async getPreviewHtml(previewPanel: PreviewPanel, doc: TextDocument): Promise<string> {
-        let templateHtml = await this.getPreviewTemplate();
+        let templateHtml = await getPreviewTemplate(this.context, "previewTemplate.html");
 
         // change resource URLs to vscode-resource:
         templateHtml = templateHtml.replace(/<script src="(.+)">/g, (scriptTag, srcPath) => {
             scriptTag;
             let resource=Uri.file(
                 path.join(this.context.extensionPath,
-                    this.CONTENT_FOLDER,
+                    CONTENT_FOLDER,
                     srcPath))
                     .with({scheme: "vscode-resource"});
             return `<script src="${resource}">`;

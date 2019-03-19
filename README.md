@@ -62,7 +62,15 @@ It is also possible to open the file in the default browser by clicking on [🗔
 Known issues:
 
 * When VS Code window is re-sized, the auto-scaling does not kick-in as there is no VS Code event that we can listen to. Workaround: click the button again (the toggle state does not change).
-* After the zoom percentabe is set manually, the zoom value does no longer update when pressing other toolbar buttons. However, the display continues scaling as expected.
+* After the zoom percentage is set manually, the zoom value does no longer update when pressing other toolbar buttons. However, the display continues scaling as expected.
+
+## For other extension developers
+
+Other extensions may invoke the preview pane programmatically by writing a valid .dot file to the disk and then executing this command:
+
+```javascript
+commands.executeCommand('graphviz.preview', Uri.parse('/path/graph.dot'));
+```
 
 ## How to install
 

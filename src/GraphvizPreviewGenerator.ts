@@ -82,6 +82,7 @@ export class GraphvizPreviewGenerator extends Disposable {
                 break;
             case 'open':
                 new OpenInBrowser().open(previewPanel.uri);
+                break;
             default:
                 console.warn('Unexpected command: ' + message.command);
         }

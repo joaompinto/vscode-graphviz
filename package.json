@@ -2,7 +2,7 @@
   "name": "vscode-graphviz",
   "displayName": "Graphviz (dot) language support for Visual Studio Code",
   "description": "This extension provides GraphViz (dot) language support for Visual Studio Code",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "publisher": "joaompinto",
   "author": "João Pinto <lamego.pinto@gmail.com>",
   "contributors": [

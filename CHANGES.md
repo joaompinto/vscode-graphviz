@@ -1,5 +1,9 @@
 # Changes
 
+## Version 0.0.5
+
+- Add all shapes based on graphviz infosrc, closes #8
+
 ## Version 0.0.4
 
 - fixed [Issue #5](https://github.com/joaompinto/vscode-graphviz/issues/5)

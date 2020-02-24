@@ -16,6 +16,8 @@ The extension can be activated in two ways
 
 Try typing one of the following prefixes to see available snippets: `graph`, `>`, `var`, `dir`, `prop`, `path` or `rank` and efficiently create graphs, variables, properties, paths or ranks.
 
+![Fixed graph snippet](images/graph_snippet.gif)
+
 ### Graph preview
 
 * Toggle Preview - `ctrl+shift+v` (Mac: `cmd+shift+v`)
@@ -49,13 +51,13 @@ The zoom level value may be now set to a specific value, or gradually changed by
 
 ### Exporting to a .svg file
 
-Click the [🢥🗋] button and select the location of the .svg file. The file may be open in any web browser, or attached to an email etc...
+Click the [↓] button and select the location of the .svg file. The file may be open in any web browser, or attached to an email etc...
 
 ![Graph preview with manual and automatic scaling](images/export.PNG)
 
 ### Opening preview in a browser
 
-It is also possible to open the file in the default browser by clicking on [🗔]. This creates a temp file and asks the operating system to open it in a default browser or another capable application.
+It is also possible to open the file in the default browser by clicking on [⇱]. This creates a temp file and asks the operating system to open it in a default browser or another capable application.
 
 ![Open file in a browser](images/open_in_browser.PNG)
 
@@ -76,7 +78,7 @@ commands.executeCommand('graphviz.preview', Uri.parse('/path/graph.dot'));
 
 Launch VS Code Quick Open (Ctrl+P), paste the following command, and press enter:
 
-    ext install joaompinto.vscode-graphviz
+`ext install joaompinto.vscode-graphviz`
 
 ## How to build and install from source (Linux)
 

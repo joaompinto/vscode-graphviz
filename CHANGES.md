@@ -1,5 +1,13 @@
 # Changes
 
+## Version 0.0.6
+
+- Fix for [Issue #15](https://github.com/joaompinto/vscode-graphviz/issues/15) related to incorrect syntax highlighting of comments lines starting with `#` character.
+The [GraphViz language spec](https://www.graphviz.org/doc/info/lang.html) specifies that _a line beginning with a '#' character is considered a line output from a C preprocessor (e.g., # 34 to indicate line 34 )_.
+- Fix for a regression of _open in browser_ functionality requested by [Issue #5](https://github.com/joaompinto/vscode-graphviz/issues/5). VS Code API to open a file in a browser changed behavior and only works for http URIs, not local files. The fix is re-introducing the `opn` dependency.
+- Fix in the language snippet for Graphs and New Variables to correctly show a dropdown list of shape options.
+![Fixed graph snippet](images/graph_snippet.gif)
+
 ## Version 0.0.5
 
 - Add all shapes based on graphviz infosrc, closes #8

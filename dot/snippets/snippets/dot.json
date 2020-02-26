@@ -2,17 +2,17 @@
     "Graph Template": {
         "prefix": "graph",
         "body": [
-            "digraph ${name:G} {",
+            "digraph ${1:G} {",
             "\tsplines=\"FALSE\";",
             "",
             "\t/* Entities */",
-            "\t${1:shortName} [label=\"${2:$1}\", shape=\"${3:|square,rectangle,circle,ellipse,triangle,plaintext,point,diamond,pentagon,hexagon,septagon,octagon,egg,trapezium,parallelogram,house,doublecircle,doubleoctagon,tripleoctagon,invtriangle,invtrapezium,invhouse,Mdiamond,Msquare,Mcircle,none,note,tab,folder,box3d|}\"${4:, URL=\"${5:http://en.wikipedia.org/wiki/John de Fries}\"}]",
-            "\t${0}",
+            "\t${2:shortName} [label=\"${3:$2}\", shape=\"${4|square,rectangle,circle,ellipse,triangle,plaintext,point,diamond,pentagon,hexagon,septagon,octagon,egg,trapezium,parallelogram,house,doublecircle,doubleoctagon,tripleoctagon,invtriangle,invtrapezium,invhouse,Mdiamond,Msquare,Mcircle,none,note,tab,folder,box3d|}\"]",
+            "\t$0",
             "\t/* Relationships */",
-            "\t${6:F1} -> $1${7:[label=\"${8:.63}\"]}",
+            "\t${5:F1} -> $2${6:[label=\"${7:.63}\"]}",
             "",
             "\t/* Ranks */",
-            "\t{ rank=${9:|same,min,max,# max is bottom|}; $1; };",
+            "\t{ rank=${8|same,min,max,# max is bottom|}; $2; };",
             "}"
         ],
         "description": "Graph Template"
@@ -27,7 +27,7 @@
     "New Variable": {
         "prefix": "var",
         "body": [
-            "${1:shortname} [label=\"${2:$1}\", shape=\"${3:|square,rectangle,circle,ellipse,triangle,plaintext,point,diamond,pentagon,hexagon,septagon,octagon,egg,trapezium,parallelogram,house,doublecircle,doubleoctagon,tripleoctagon,invtriangle,invtrapezium,invhouse,Mdiamond,Msquare,Mcircle,none,note,tab,folder,box3d|}\"${4:, URL=\"${5:http://en.wikipedia.org/wiki/John de Fries}\"}]",
+            "${1:shortname} [label=\"${2:$1}\", shape=\"${3|square,rectangle,circle,ellipse,triangle,plaintext,point,diamond,pentagon,hexagon,septagon,octagon,egg,trapezium,parallelogram,house,doublecircle,doubleoctagon,tripleoctagon,invtriangle,invtrapezium,invhouse,Mdiamond,Msquare,Mcircle,none,note,tab,folder,box3d|}\"${4:, URL=\"${5:http://en.wikipedia.org/wiki/John de Fries}\"}]",
             "${0}"
         ],
         "description": "New variable"
@@ -35,7 +35,7 @@
     "Property [dir=both…]": {
         "prefix": "dir",
         "body": [
-            "[dir=${1:|back,both,forward,none|}]"
+            "[dir=${1|back,both,forward,none|}]"
         ],
         "description": "Property [dir=both…]"
     },
@@ -77,7 +77,7 @@
     "{ rank=same|min|max; x; y }": {
         "prefix": "rank",
         "body": [
-            "{ rank=${1:|same,min,max,# max is bottom|}; ${2:space delimitted list }};"
+            "{ rank=${1|same,min,max,# max is bottom|}; ${2:space delimitted list }};"
         ],
         "description": "{rank=same|min|max; x; y}"
     }

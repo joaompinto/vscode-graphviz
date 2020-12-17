@@ -6,7 +6,7 @@
 
 A vscode extension that provides language support and live preview for the Graphviz format.
 
-The preview uses the [Viz.js](https://github.com/mdaines/viz.js/) library.
+The preview uses the [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) library.
 
 The extension can be activated in two ways
 
@@ -95,5 +95,5 @@ On Windows, just omit the `sudo` instruction.
 
 ## Credits
 
-* The preview uses <https://github.com/mdaines/viz.js/> .
+* The preview uses <https://github.com/hpcc-systems/hpcc-js-wasm> .
 * The syntax highlight/snippets support is based on <https://github.com/Stephanvs/vscode-graphviz> .

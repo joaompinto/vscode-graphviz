@@ -1,7 +1,6 @@
 import fs = require('fs');
 import { Uri, window, workspace } from 'vscode';
-let Viz = require("viz.js");
-const { Module, render } = require('viz.js/full.render.js');
+import { graphviz } from "@hpcc-js/wasm";
 
 export class SvgExporter {
     constructor() {
@@ -31,7 +30,7 @@ export class SvgExporter {
     protected async renderSvgString(documentUri: Uri): Promise<string> {
         let doc = await workspace.openTextDocument(documentUri);
         let graphVizText = doc.getText();
-        let svg = await new Viz({ Module, render }).renderString(graphVizText);
+        let svg = await graphviz.dot(graphVizText);
         return svg;
     }
 }

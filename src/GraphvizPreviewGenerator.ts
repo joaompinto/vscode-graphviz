@@ -1,6 +1,5 @@
 import { ExtensionContext, TextDocument, window, ViewColumn, Uri, WebviewPanel, workspace, Disposable } from "vscode";
-const { Module, render } = require('viz.js/full.render.js');
-let Viz = require("viz.js");
+import { graphviz } from "@hpcc-js/wasm";
 import * as path from "path";
 import { SvgExporter } from "./SvgExporter";
 import { OpenInBrowser } from "./OpenInBrowser";
@@ -113,7 +112,7 @@ export class GraphvizPreviewGenerator extends Disposable {
 
     toSvg(doc: TextDocument): Thenable<string> | string {
         let text = doc.getText();
-        return new Viz({Module, render}).renderString(text);
+        return graphviz.dot(text);
     }
 
     private async getPreviewHtml(previewPanel: PreviewPanel, doc: TextDocument): Promise<string> {

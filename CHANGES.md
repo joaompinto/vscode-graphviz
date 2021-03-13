@@ -1,5 +1,10 @@
 # Changes
 
+## Version 0.0.7
+
+- Added the preview button to the Editor title and Explorer context menu
+- Addressed [Issue #18](https://github.com/joaompinto/vscode-graphviz/issues/18)
+
 ## Version 0.0.6
 
 - Fix for [Issue #15](https://github.com/joaompinto/vscode-graphviz/issues/15) related to incorrect syntax highlighting of comments lines starting with `#` character.

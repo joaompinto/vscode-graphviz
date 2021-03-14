@@ -11,13 +11,16 @@ export async function getPreviewTemplate(context: ExtensionContext, templateName
 
 export async function getHtml(fileName: string, context: ExtensionContext, webview: Webview) {
     let templateHtml = await getPreviewTemplate(context, fileName);
+    const nonce = generateNonce();
 
     // change resource URLs to vscode-resource:
-    templateHtml = templateHtml.replace(/<script src="(.+)">/g, (scriptTag, srcPath) => {
-        scriptTag;
-        const localResource = Uri.joinPath(context.extensionUri, CONTENT_FOLDER, srcPath);
-        const webviewResource = webview.asWebviewUri(localResource);
-        return `<script src="${webviewResource}">`;
+    templateHtml = templateHtml.replace(/<(script|img|link) ([^>]*)(src|href)="([^"]+)"/g, (sourceElement: string, elementName: string, middleBits: string, attribName: string, attribValue: string) => {
+        if (isAbsoluteWebview(attribValue)) {
+            return sourceElement;
+        }
+        const resource = getWebviewUri(context, CONTENT_FOLDER, attribValue, webview);
+        const nonceAttr = elementName.toLowerCase() === "script" && attribName.toLowerCase() === "src" && nonce ? `nonce="${nonce}" ` : "";
+        return `<${elementName} ${middleBits ?? ""}${nonceAttr}${attribName}="${resource}"`;
     });
 
     // be sure that the template has a placeholder for Content Security Policy
@@ -25,12 +28,24 @@ export async function getHtml(fileName: string, context: ExtensionContext, webvi
     if (!templateHtml.match(cspPlaceholderPattern) || templateHtml.includes('http-equiv="Content-Security-Policy"')) {
         throw new Error(`Template does not contain CSP placeholder or contains rogue CSP.`);
     }
-    const nonce = generateNonce();
     cspPlaceholderPattern.lastIndex = 0;
     templateHtml = templateHtml.replace(cspPlaceholderPattern, createContentSecurityPolicy(webview, nonce));
 
     return templateHtml;
 }
+
+function isAbsoluteWebview(attribValue: string): boolean {
+    return attribValue.match(/^(http[s]?|data):/i) !== null;
+}
+
+function getWebviewUri(extensionContext: ExtensionContext, relativePath: string, fileName: string, webview?: Webview): Uri {
+    return asWebviewUri(Uri.joinPath(extensionContext.extensionUri, relativePath, fileName), webview);
+}
+
+function asWebviewUri(localUri: Uri, webview?: Webview): Uri {
+    return webview?.asWebviewUri(localUri) ?? localUri.with({ scheme: "vscode-resource" });
+}
+
 
 function createContentSecurityPolicy(webview: Webview, nonce: string | undefined): string {
     const unsafeInline = "'unsafe-inline'";

@@ -58,7 +58,7 @@ export function activate(context: ExtensionContext) {
     let preview = commands.registerCommand("graphviz.preview", async (dotDocumentUri: Uri) => {
         let dotDocument = await getDotDocument(dotDocumentUri);
         if (dotDocument) {
-            return graphvizPreviewGenerator.revealOrCreatePreview(dotDocument, window.activeTextEditor.viewColumn);
+            return graphvizPreviewGenerator.revealOrCreatePreview(dotDocument, window.activeTextEditor?.viewColumn ?? ViewColumn.Active);
         }
     })
 
@@ -69,7 +69,7 @@ async function getDotDocument(dotDocumentUri: Uri | undefined): Promise<TextDocu
     if (dotDocumentUri) {
         return await workspace.openTextDocument(dotDocumentUri);
     } else {
-        if (window.activeTextEditor != null && window.activeTextEditor.document.languageId === DOT) {
+        if (window.activeTextEditor?.document.languageId === DOT) {
             return window.activeTextEditor.document;
         }
         else {

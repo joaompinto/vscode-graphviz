@@ -2,7 +2,7 @@ import { Uri, ExtensionContext } from "vscode";
 import { SvgExporter } from "./SvgExporter";
 import { getPreviewTemplate } from "./ContentUtils";
 import * as tmp from 'tmp';
-import opn = require('opn');
+import opn = require('open');
 import * as path from 'path';
 import fs = require('fs');
 

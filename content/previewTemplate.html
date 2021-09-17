@@ -9,12 +9,21 @@
         .toolbarElement { height: 26px }
     </style>
 </head>
-<body onload="initializeScale(1,false,false)">
+<body onload="initializeScale(1,false,false,'dot')">
     <div style="position: fixed; bottom: 3px; left: 3px; font-size: 200%">
         <input id="scalePercent" value="100"
             style="width: 50px" type="number"
             onchange="setScale(this.value/100.0)"
             class="toolbarElement"/><span style="font-size: 50%; color: gray">%</span>
+        <select id="selLayout" onchange="setLayout(this.value)" style="width: 50px" class="toolbarElement"/>
+            <option value="dot">dot</option>
+            <option value="circo">circo</option>
+            <option value="fdp">fdp</option>
+            <option value="neato">neato</option>
+            <option value="osage">osage</option>
+            <option value="patchwork">patchwork</option>
+            <option value="twopi">twopi</option>
+		</select>
         <button onclick="larger()" title="Make the graph 50% larger." class="toolbarElement">▲</button>
         <button onclick="smaller()" title="Make the graph 50% smaller." class="toolbarElement">▼</button>
         <button onclick="original()" title="Reset to 100% zoom." class="toolbarElement">1:1</button>

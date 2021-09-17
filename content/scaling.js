@@ -6,6 +6,8 @@ var originalHeightUnit = "%";
 
 var svg = null;
 
+var layout = "dot"
+
 var scale = 1;
 var fitToHeightToggledOn = false;
 var fitToWidthToggledOn = false;
@@ -18,7 +20,7 @@ try {
     // swallow, so in the script can be tested in a browser
 }
 
-function initializeScale(initialScale, initialFitToWidthMode, initialFitToHeightMode) {
+function initializeScale(initialScale, initialFitToWidthMode, initialFitToHeightMode, initialLayout) {
     var svgEls = document.getElementsByTagName("svg");
     if (svgEls.length < 1) {
         console.error("Cannot find any 'svg' element in the document.");
@@ -41,6 +43,7 @@ function initializeScale(initialScale, initialFitToWidthMode, initialFitToHeight
         originalHeightUnit = match[2];
     }
 
+	setInitLayout(initialLayout);
     // apply initial values
     setScale(initialScale);
     if (initialFitToWidthMode) fitToWidth();
@@ -131,12 +134,31 @@ function update(sendMessage=true) {
     }
     document.getElementById("scalePercent").setAttribute("value", (scale*100).toFixed(0));
 
+	var formObj = document.getElementById("selLayout")
+	let len;
+	for (let i = 0, len = formObj.length; i < len; i++){
+		if (formObj[i].value == layout)
+		formObj.options[i].selected = true;
+		else
+		formObj.options[i].selected = false;
+	}
+
+
     // post message to the extension, so the scale is respected after the webview is updated
     if (sendMessage) postMessage({command: 'scale', value: scale});
 }
 
 function exportSvg() {
     postMessage({command: 'export'})
+}
+
+function setInitLayout(value) {
+    layout = value;
+}
+
+function setLayout(value) {
+    layout = value;
+	postMessage({command: 'layout', value: value})
 }
 
 function openInBrowser() {

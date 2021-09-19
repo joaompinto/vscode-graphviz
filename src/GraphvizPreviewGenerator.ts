@@ -1,16 +1,15 @@
-import { ExtensionContext, TextDocument, window, ViewColumn, Uri, WebviewPanel, workspace, Disposable } from "vscode";
+import { ExtensionContext, TextDocument, window, ViewColumn, Uri, WebviewPanel, workspace, Disposable, Webview } from "vscode";
 import { graphviz } from "@hpcc-js/wasm";
 import * as path from "path";
 import { SvgExporter } from "./SvgExporter";
 import { OpenInBrowser } from "./OpenInBrowser";
-import { getPreviewTemplate, CONTENT_FOLDER } from "./ContentUtils";
-var fs = require("fs");
+import { getPreviewTemplate, CONTENT_FOLDER, getHtml } from "./ContentUtils";
 
 export class GraphvizPreviewGenerator extends Disposable {
 
     webviewPanels = new Map<Uri, PreviewPanel>();
 
-    timeout: NodeJS.Timer;
+    timeout: NodeJS.Timer | undefined;
 
     constructor(private context: ExtensionContext) {
         super(() => this.dispose());
@@ -27,20 +26,24 @@ export class GraphvizPreviewGenerator extends Disposable {
     }
 
     resetTimeout(): void {
-        if(this.timeout) {
-            clearTimeout(this.timeout);
+        if (this.timeout) {
+            this.timeout.refresh();
+        } else {
+            this.timeout = setTimeout(() => this.rebuild(), 1000);
         }
-        this.timeout = setTimeout(() => this.rebuild(), 1000);
     }
 
     dispose(): void {
-        clearTimeout(this.timeout);
+        if (this.timeout) {
+            clearTimeout(this.timeout);
+        }
     }
 
     rebuild(): void {
         this.webviewPanels.forEach(panel => {
-            if(panel.getNeedsRebuild() && panel.getPanel().visible)
+            if (panel.getNeedsRebuild() && panel.getPanel().visible) {
                 this.updateContent(panel, workspace.textDocuments.find(doc => doc.uri == panel.uri));
+            }
         });
     }
 
@@ -93,9 +96,9 @@ export class GraphvizPreviewGenerator extends Disposable {
     }
 
     createPreviewPanel(doc: TextDocument, displayColumn: ViewColumn): PreviewPanel {
-        let previewTitle = `Preview: '${path.basename(window.activeTextEditor.document.fileName)}'`;
+        const previewTitle = `Preview: '${path.basename(doc.fileName)}'`;
 
-        let webViewPanel = window.createWebviewPanel('graphvizPreview', previewTitle, displayColumn, {
+        const webViewPanel = window.createWebviewPanel('graphvizPreview', previewTitle, displayColumn, {
             enableFindWidget: true,
             enableScripts: true,
             localResourceRoots: [Uri.file(path.join(this.context.extensionPath, "content"))]
@@ -149,7 +152,7 @@ export class GraphvizPreviewGenerator extends Disposable {
 
 class PreviewPanel {
 
-    needsRebuild: boolean;
+    needsRebuild = false;
     scale = 1;
     fitToWidth = false;
     fitToHeight = false;

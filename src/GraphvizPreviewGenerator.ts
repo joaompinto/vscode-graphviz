@@ -74,6 +74,10 @@ export class GraphvizPreviewGenerator extends Disposable {
             case 'scale':
                 previewPanel.setScale(message.value);
                 break;
+            case 'layout':
+                previewPanel.setLayout(message.value);
+				previewPanel.setNeedsRebuild(true);
+                break;
             case 'fitToHeight':
                 previewPanel.setFitToHeight(message.value);
                 break;
@@ -113,20 +117,31 @@ export class GraphvizPreviewGenerator extends Disposable {
         previewPanel.getPanel().webview.html = await this.getPreviewHtml(previewPanel, doc);
     }
 
-    toSvg(doc: TextDocument): Thenable<string> | string {
+    toSvg(layout: string, doc: TextDocument): Thenable<string> | string {
         let text = doc.getText();
-        return graphviz.dot(text);
+		type Engine = "circo" | "dot" | "fdp" | "neato" | "osage" | "patchwork" | "twopi"
+		return graphviz.layout(text, "svg", layout as Engine);
     }
 
     private async getPreviewHtml(previewPanel: PreviewPanel, doc: TextDocument): Promise<string> {
-        let templateHtml = await getHtml("previewTemplate.html", this.context, previewPanel.getPanel().webview);
-    
-        templateHtml = templateHtml.replace("initializeScale(1,false,false)",
-            `initializeScale(${previewPanel.getScale()}, ${previewPanel.getFitToWidth()}, ${previewPanel.getFitToHeight()})`);
+        let templateHtml = await getPreviewTemplate(this.context, "previewTemplate.html");
+
+        // change resource URLs to vscode-resource:
+        templateHtml = templateHtml.replace(/<script src="(.+)">/g, (scriptTag, srcPath) => {
+            scriptTag;
+            let resource=Uri.file(
+                path.join(this.context.extensionPath,
+                    CONTENT_FOLDER,
+                    srcPath))
+                    .with({scheme: "vscode-resource"});
+            return `<script src="${resource}">`;
+        }).replace("initializeScale(1,false,false,\'dot\')",
+            `initializeScale(${previewPanel.getScale()}, ${previewPanel.getFitToWidth()}, ${previewPanel.getFitToHeight()}, \'${previewPanel.getLayout()}\')`);
 
         let svg = "";
         try {
-            svg = await this.toSvg(doc);
+			let layout = previewPanel.getLayout();
+            svg = await this.toSvg(layout, doc);
         }catch(error){
             svg = error.toString();
         }
@@ -141,6 +156,7 @@ class PreviewPanel {
     scale = 1;
     fitToWidth = false;
     fitToHeight = false;
+	layout = "dot";
 
     constructor(public uri: Uri, private panel: WebviewPanel) {}
 
@@ -148,8 +164,16 @@ class PreviewPanel {
         this.scale = value;
     }
 
-    getScale(): number {
+	setLayout(value: string): void {
+		this.layout = value;
+	}
+
+	getScale(): number {
         return this.scale;
+    }
+
+	getLayout(): string {
+        return this.layout;
     }
 
     setFitToWidth(value: boolean): void {

@@ -1,4 +1,10 @@
+# Archived
+
+:exclamation::exclamation::exclamation:  This extension is no longer being maintained. 
+
 # Graphviz Support
+
+
 
 [![Version](https://vsmarketplacebadge.apphb.com/version/joaompinto.vscode-graphviz.svg)](https://marketplace.visualstudio.com/items?itemName=joaompinto.vscode-graphviz)
 [![Installs](https://vsmarketplacebadge.apphb.com/installs/joaompinto.vscode-graphviz.svg)](https://marketplace.visualstudio.com/items?itemName=joaompinto.vscode-graphviz)

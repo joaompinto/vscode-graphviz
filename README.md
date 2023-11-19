@@ -1,9 +1,5 @@
 # Graphviz Support
 
-[![Version](https://vsmarketplacebadge.apphb.com/version/joaompinto.vscode-graphviz.svg)](https://marketplace.visualstudio.com/items?itemName=joaompinto.vscode-graphviz)
-[![Installs](https://vsmarketplacebadge.apphb.com/installs/joaompinto.vscode-graphviz.svg)](https://marketplace.visualstudio.com/items?itemName=joaompinto.vscode-graphviz)
-[![Ratings](https://vsmarketplacebadge.apphb.com/rating/joaompinto.vscode-graphviz.svg)](https://vsmarketplacebadge.apphb.com/rating/joaompinto.vscode-graphviz.svg)
-
 A vscode extension that provides language support and live preview for the Graphviz format.
 
 The preview uses the [@hpcc-js/wasm](https://github.com/hpcc-systems/hpcc-js-wasm) library.

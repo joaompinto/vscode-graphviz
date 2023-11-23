@@ -1,0 +1,15 @@
+out/
+node_modules/
+*.vsix
+.asciidoctor/
+test/samples/*.pdf
+media/*.js
+test/samples/playground.*
+dist/
+.DS_Store
+.vscode-test/
+.vscode-test-web/
+media/highlightjs/*
+media/font-awesome/**
+media/mathjax/**
+media/fonts/**

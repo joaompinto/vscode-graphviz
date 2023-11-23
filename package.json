@@ -1,0 +1,102 @@
+{
+  "name": "vscode-graphviz",
+  "displayName": "vscode-graphviz",
+  "description": "VSCode support for GraphViz",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.84.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onCommand:graphviz.preview"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "dot",
+        "aliases": [
+          "Graphviz (DOT)"
+        ],
+        "extensions": [
+          ".gv",
+          ".dot",
+          ".DOT"
+        ],
+        "configuration": "dot/dot.configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "dot",
+        "scopeName": "source.dot",
+        "path": "dot/syntaxes/dot.tmLanguage"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "dot",
+        "path": "dot/snippets/snippets/dot.json"
+      }
+    ],
+    "commands": [
+      {
+        "command": "graphviz.previewToSide",
+        "title": "Hello World"
+      }
+    ]
+  },
+  "keybindings": [
+    {
+      "command": "graphviz.previewToSide",
+      "key": "ctrl+k v",
+      "mac": "cmd+k shift+v",
+      "when": "editorTextFocus && editorLangId == dot"
+    }
+  ],
+  "commands": [
+    {
+      "command": "graphviz.preview",
+      "title": "Toggle Preview",
+      "category": "Graphviz"
+    },
+    {
+      "command": "graphviz.previewToSide",
+      "title": "Open Preview to the Side",
+      "category": "Graphviz",
+      "icon": {
+        "light": "images/light/open-preview.svg",
+        "dark": "images/dark/open-preview.svg"
+      }
+    }
+  ],
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.84.0",
+    "@types/mocha": "^10.0.3",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
+    "@typescript-eslint/parser": "^6.9.0",
+    "eslint": "^8.52.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.2.0",
+    "typescript": "^5.2.2",
+    "ts-loader": "^9.5.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4",
+    "@vscode/test-electron": "^2.3.6"
+  }
+}

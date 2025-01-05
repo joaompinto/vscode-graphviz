@@ -1,4 +1,9 @@
-import { Uri, ExtensionContext } from "vscode";
+import { Uri, ExtensionContext } from
+//# #if HAVE_VSCODE
+"vscode";
+//# #elif HAVE_COC_NVIM
+//# "coc.nvim";
+//# #endif
 import { SvgExporter } from "./SvgExporter";
 import { getPreviewTemplate } from "./ContentUtils";
 import * as tmp from 'tmp';

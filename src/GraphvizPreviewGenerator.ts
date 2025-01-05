@@ -1,18 +1,40 @@
-import { ExtensionContext, TextDocument, window, ViewColumn, Uri, WebviewPanel, workspace, Disposable, Webview } from "vscode";
+import {
+    ExtensionContext,
+    TextDocument,
+    window,
+    Uri,
+    workspace,
+    Disposable,
+//# #if HAVE_VSCODE
+    WebviewPanel,
+    Webview
+} from "vscode";
+//# #elif HAVE_COC_NVIM
+//# #define Thenable Promise
+//# } from "coc.nvim";
+//# import { WebviewPanel, Webview } from "coc-webview";
+//# import { getWebviewAPI } from "./util";
+//# #endif
 import { graphviz } from "@hpcc-js/wasm";
 import * as path from "path";
 import { SvgExporter } from "./SvgExporter";
 import { OpenInBrowser } from "./OpenInBrowser";
 import { getPreviewTemplate, CONTENT_FOLDER, getHtml } from "./ContentUtils";
 
-export class GraphvizPreviewGenerator extends Disposable {
+export class GraphvizPreviewGenerator
+//# #if HAVE_VSCODE
+extends Disposable
+//# #endif
+{
 
     webviewPanels = new Map<Uri, PreviewPanel>();
 
-    timeout: NodeJS.Timer | undefined;
+    timeout: NodeJS.Timeout | undefined;
 
     constructor(private context: ExtensionContext) {
+        //# #if HAVE_VSCODE
         super(() => this.dispose());
+        //# #endif
      }
 
     setNeedsRebuild(uri: Uri, needsRebuild: boolean): void {
@@ -42,22 +64,53 @@ export class GraphvizPreviewGenerator extends Disposable {
     rebuild(): void {
         this.webviewPanels.forEach(panel => {
             if (panel.getNeedsRebuild() && panel.getPanel().visible) {
-                this.updateContent(panel, workspace.textDocuments.find(doc => doc.uri == panel.uri));
+                this.updateContent(panel, workspace.textDocuments.find(doc =>
+                    //# #if HAVE_VSCODE
+                    doc.uri
+                    //# #elif HAVE_COC_NVIM
+                    //# Uri.parse(doc.uri)
+                    //# #endif
+                        == panel.uri));
             }
         });
     }
 
-    async revealOrCreatePreview(doc: TextDocument, displayColumn: ViewColumn): Promise<void> {
-        let previewPanel = this.webviewPanels.get(doc.uri);
+    async revealOrCreatePreview(doc: TextDocument,
+        displayColumn:
+        //# #if HAVE_VSCODE
+        ViewColumn
+        //# #elif HAVE_COC_NVIM
+        //# { openURL: boolean }
+        //# #endif
+    ): Promise<void> {
+        let previewPanel = this.webviewPanels.get(
+            //# #if HAVE_VSCODE
+            doc.uri
+            //# #elif HAVE_COC_NVIM
+            //# Uri.parse(doc.uri)
+            //# #endif
+        );
 
         if (previewPanel) {
             previewPanel.reveal(displayColumn);
         }
         else {
-            previewPanel = this.createPreviewPanel(doc, displayColumn);
-            this.webviewPanels.set(doc.uri, previewPanel);
+            previewPanel = await this.createPreviewPanel(doc, displayColumn);
+            this.webviewPanels.set(
+                //# #if HAVE_VSCODE
+                doc.uri,
+                //# #elif HAVE_COC_NVIM
+                //# Uri.parse(doc.uri),
+                //# #endif
+                previewPanel);
             // when the user closes the tab, remove the panel
-            previewPanel.getPanel().onDidDispose(() => this.webviewPanels.delete(doc.uri), undefined, this.context.subscriptions);
+            previewPanel.getPanel().onDidDispose(() => this.webviewPanels.delete(
+                //# #if HAVE_VSCODE
+                doc.uri,
+                //# #elif HAVE_COC_NVIM
+                //# Uri.parse(doc.uri),
+                //# #endif
+            ), undefined, this.context.subscriptions);
             // when the pane becomes visible again, refresh it
             previewPanel.getPanel().onDidChangeViewState(_ => this.rebuild());
 
@@ -95,18 +148,41 @@ export class GraphvizPreviewGenerator extends Disposable {
         }
     }
 
-    createPreviewPanel(doc: TextDocument, displayColumn: ViewColumn): PreviewPanel {
-        const previewTitle = `Preview: '${path.basename(doc.fileName)}'`;
-
-        const webViewPanel = window.createWebviewPanel('graphvizPreview', previewTitle, displayColumn, {
+    async createPreviewPanel(doc: TextDocument,
+        //# #if HAVE_VSCODE
+        displayColumn: ViewColumn
+        //# #elif HAVE_COC_NVIM
+        //# displayColumn_: { openURL: boolean }
+        //# #endif
+    ): Promise<PreviewPanel> {
+        const previewTitle = `Preview: '${path.basename(doc.uri)}'`;
+        //# #if HAVE_COC_NVIM
+        //# const displayColumn = { openURL: displayColumn_.openURL, routeName: 'graphvizPreview' };
+        //# #endif
+        const webViewPanel =
+        //# #if HAVE_VSCODE
+        window
+        //# #elif HAVE_COC_NVIM
+        //# await getWebviewAPI()
+        //# #endif
+        .createWebviewPanel('graphvizPreview', previewTitle, displayColumn, {
+            //# #if HAVE_VSCODE
             enableFindWidget: true,
+            //# #endif
             enableScripts: true,
             localResourceRoots: [Uri.file(path.join(this.context.extensionPath, "content"))]
         });
 
         webViewPanel.iconPath = Uri.file(this.context.asAbsolutePath("content/icon.svg"));
 
-        return new PreviewPanel(doc.uri, webViewPanel);
+        return new PreviewPanel(
+            //# #if HAVE_VSCODE
+            doc.uri,
+            //# #elif HAVE_COC_NVIM
+            //# Uri.parse(doc.uri),
+            //# #endif
+            webViewPanel
+        );
     }
 
     async updateContent(previewPanel: PreviewPanel, doc: TextDocument) {
@@ -192,7 +268,13 @@ class PreviewPanel {
         return this.fitToHeight;
     }
 
-    reveal(displayColumn: ViewColumn): void {
+    reveal(displayColumn:
+        //# #if HAVE_VSCODE
+        ViewColumn,
+        //# #elif HAVE_COC_NVIM
+        //# { openURL: boolean }
+        //# #endif
+    ): void {
         this.panel.reveal(displayColumn);
     }
 

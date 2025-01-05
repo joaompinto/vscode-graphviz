@@ -1,0 +1,168 @@
+{
+  "name": "coc-graphviz",
+  "displayName": "Graphviz (dot) language support for Visual Studio Code",
+  "description": "This extension provides GraphViz (dot) language support for Visual Studio Code",
+  "version": "0.0.9",
+  "publisher": "joaompinto",
+  "author": "João Pinto <lamego.pinto@gmail.com>",
+  "keywords": [
+    "coc.nvim"
+  ],
+  "contributors": [
+    "Jan Dolejsi"
+  ],
+  "license": "MIT",
+  "readme": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/joaompinto/vscode-graphviz"
+  },
+  "galleryBanner": {
+    "color": "#69c",
+    "theme": "light"
+  },
+  "bugs": "https://github.com/joaompinto/vscode-graphviz/issues",
+  "homepage": "https://github.com/joaompinto/vscode-graphviz/blob/master/README.md",
+  "icon": "images/icon.png",
+  "main": "./out/src/extension.js",
+  "engines": {
+    "coc": "^0.0.82"
+  },
+  "categories": [
+    "Programming Languages",
+    "Snippets"
+  ],
+  "activationEvents": [
+    "onLanguage:dot",
+    "onCommand:graphviz.preview"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "dot",
+        "aliases": [
+          "Graphviz (DOT)"
+        ],
+        "extensions": [
+          ".gv",
+          ".dot",
+          ".DOT"
+        ],
+        "configuration": "dot/dot.configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "dot",
+        "scopeName": "source.dot",
+        "path": "dot/syntaxes/dot.tmLanguage"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "dot",
+        "path": "dot/snippets/snippets/dot.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "Graphviz Configuration",
+      "properties": {
+        "Graphviz.runInterval": {
+          "type": "number",
+          "default": 1000,
+          "description": "Control how often we will be checking for file changes"
+        }
+      }
+    },
+    "keybindings": [
+      {
+        "command": "graphviz.preview",
+        "key": "ctrl+shift+v",
+        "mac": "shift+cmd+v",
+        "when": "editorTextFocus && editorLangId == dot"
+      },
+      {
+        "command": "graphviz.previewToSide",
+        "key": "ctrl+k v",
+        "mac": "cmd+k shift+v",
+        "when": "editorTextFocus && editorLangId == dot"
+      }
+    ],
+    "commands": [
+      {
+        "command": "graphviz.preview",
+        "title": "Toggle Preview",
+        "category": "Graphviz"
+      },
+      {
+        "command": "graphviz.previewToSide",
+        "title": "Open Preview to the Side",
+        "category": "Graphviz",
+        "icon": {
+          "light": "images/light/open-preview.svg",
+          "dark": "images/dark/open-preview.svg"
+        }
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "graphviz.previewToSide",
+          "when": "resourceLangId == dot",
+          "group": "navigation"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "graphviz.previewToSide",
+          "when": "resourceLangId == dot"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "graphviz.previewToSide",
+          "when": "resourceLangId == dot"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "graphviz.preview",
+          "when": "resourceLangId == dot"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "graphviz.preview",
+          "when": "resourceLangId == dot"
+        },
+        {
+          "command": "graphviz.previewToSide",
+          "when": "resourceLangId == dot"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "patch": "scripts/patch.sh ../src/*.ts",
+    "watch": "tsc -watch -p ./",
+    "prepack": "npm run patch && tsc -p ./"
+  },
+  "devDependencies": {
+    "@types/mocha": "^8.2.1",
+    "@types/node": "^18.0.0",
+    "@types/tmp": "^0.2.0",
+    "coc-helper": "^0.16.3",
+    "coc-webview": "^0.12.0",
+    "coc.nvim": "^0.0.83-next.18",
+    "mocha": "^10.2.0",
+    "socket.io": "^4.7.4",
+    "typescript": "^4.2.3"
+  },
+  "dependencies": {
+    "@hpcc-js/wasm": "^1.3.0",
+    "dot-language-server": "1.2.0",
+    "open": "^8.0.2",
+    "tmp": "^0.2.1"
+  }
+}

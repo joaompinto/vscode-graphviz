@@ -27,11 +27,12 @@ import {
 } from 'vscode';
 
 import { GraphvizPreviewGenerator } from './GraphvizPreviewGenerator';
+import { activate as _activate } from '.';
 
 const DOT = 'dot';
 
 export function activate(context: ExtensionContext) {
-
+    _activate(context);
     const graphvizPreviewGenerator = new GraphvizPreviewGenerator(context);
 
     // When the active document is changed set the provider for rebuild
